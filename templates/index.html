@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Netpad v1.0 by Orensh</title>
+    <style>
+
+        @keyframes gradientAnimation {
+            0% {
+                background: black;
+            }
+            60% {
+                background:rgb(73, 37, 90)
+            }
+            100% {
+                background: black;
+            }
+        }
+
+        body {
+            animation: gradientAnimation 2000ms cubic-bezier(0.229, 0.775, 0.33, 0.77);
+            background-color: black;
+        }
+
+        .black-theme {
+            background-color: black;
+            color: white;
+        }
+
+        /* CSS for the white theme */
+        .white-theme {
+            
+            background-color: white;
+            color: black;
+        }
+
+        /* Center align the contents of the container */
+        .container {
+            text-align: center;
+        }
+
+        /* Add some CSS to style the textarea */
+        textarea {
+            
+            resize: both; /* Allow resizing in both directions */
+            height: 10em; /* Set the height to 10 lines (10em is equivalent to 10 times the line height) */
+            width: 100%; /* Make the textarea take up the full width of its container */
+            box-sizing: border-box; /* Include padding and border in the width */
+        }
+
+        /* Style for the background color buttons */
+        .color-button {
+            right: 10px;
+            background-color: rgb(180, 114, 211);
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .copy-paste-button {
+            background-color: rgb(163, 163, 163);
+            cursor: pointer;
+            margin-right: 4px;
+            margin-left: 8px;
+        }
+
+        .green-add-button {
+            background-color: rgb(29, 175, 73);
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        .red-remove-button {
+            margin-left: 8px;
+            background-color: rgb(180, 33, 33);
+            cursor: pointer;
+        }
+
+        /* Container for each textbox and buttons */
+        .textbox-container {
+            
+            margin-top: 5px;
+            margin-bottom: 20px;    /* Add some margin to separate the containers */
+            width: 85;              /* Set the width of the container */
+            display: inline-block;  /* Display containers side by side */
+            vertical-align: top;    /* Align containers to the top */
+        }
+
+        /* Style for the copy and paste buttons */
+        .textbox-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 0px;
+        }
+
+        .textbox-buttons button {
+            margin: 0 5px;
+        }
+
+        /* Style for the add and delete buttons */
+        .add-delete-buttons {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* CSS for the buttons in the top right corner */
+        .button-top-right {
+            display: flex;
+            position: absolute;
+            right: 10px; /* Adjust the right position as needed */
+            top: 10px;
+        }
+
+        /* CSS to align buttons horizontally */
+        .button-top-right + .button-top-right {
+            margin-left: 10px; /* Adjust the horizontal spacing between buttons */
+        }
+
+
+        .purple-header {
+            font-family: sans-serif;
+            font-size: 11px;
+            color:rgb(180, 114, 211);
+        }
+
+        /* Grid layout for textboxes */
+        .textbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(30%, 1fr)); /* Adjust the column size */
+            gap: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="add-delete-buttons">
+        <!-- Buttons to change background color -->
+        <button class="green-add-button" onclick="addTextbox()">Add Textbox</button>
+        <button class="red-remove-button" onclick="deleteTextbox()">Delete Textbox</button>
+        <button class="copy-paste-button" onclick="updateTextboxLayout()">Reset Textbox Sizes</button>
+
+        <h class="purple-header">Netpad v1.0 by Oren Shchory</h>
+        <div class="button-top-right">
+         <!--   <h class="purple-header">Change Background Color - </h> -->
+        <button class="color-button" onclick="changeToBlackTheme()">Black</button>
+        <button class="color-button" onclick="changeToWhiteTheme()">White</button>
+        <button class="color-button" onclick="changeRandomBackgroundColor()">Random</button>
+
+        <button class="color-button" onclick="saveAllData()">Save All</button>
+        </div>
+    </div>
+
+    <!-- Container for dynamic textboxes -->
+    <div id="textbox-container" class="textbox-grid">
+        <!-- Initial textbox -->
+        <div class="textbox-container">
+            <div class="container">
+                <textarea class="black-theme" id="textbox1"></textarea>
+            </div>
+            <div class="container textbox-buttons">
+                <button class="copy-paste-button" onclick="copyText(1)">Copy</button>
+                <button class="copy-paste-button" onclick="pasteText(1)">Paste</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add and delete buttons -->
+
+
+    <script>
+        var textboxCount = 1; // Initial textbox count
+        var black = 1;
+        
+
+        function copyText(textboxNumber) {
+            var textBox = document.getElementById("textbox" + textboxNumber);
+            textBox.select();
+            document.execCommand("copy");
+        }
+
+        async function pasteText(textboxNumber) {
+            try {
+                const text = await navigator.clipboard.readText();
+                document.getElementById("textbox" + textboxNumber).value = text;
+            } catch (err) {
+                console.error('Failed to paste text: ', err);
+            }
+        }
+
+        function changeToBlackTheme() {
+            document.body.style.backgroundColor = 'black';
+            black = 1;
+            // Apply the black theme to all textboxes
+            var textboxes = document.querySelectorAll('textarea');
+            textboxes.forEach(function (textbox) {
+                textbox.classList.remove('white-theme');
+                textbox.classList.add('black-theme');
+            });
+        }
+
+        // Function to change background color to white and apply white theme
+        function changeToWhiteTheme() {
+        document.body.style.backgroundColor = 'white';
+            black = 0;
+        // Apply the white theme to all textboxes
+        var textboxes = document.querySelectorAll('textarea');
+        textboxes.forEach(function (textbox) {
+            textbox.classList.remove('black-theme');
+            textbox.classList.add('white-theme');
+            });
+        }
+
+        // Function to generate a random color in HSL spectrum
+        function getRandomColor() {
+            var hue = Math.floor(Math.random() * 360); // Random hue (0-359 degrees)
+            var saturation = 100; // Full saturation
+            var lightness = 50; // 50% lightness (for mid-range colors)
+            return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        }
+
+        // Function to change background color to a random color
+        function changeRandomBackgroundColor() {
+            var randomColor = getRandomColor();
+            document.body.style.backgroundColor = randomColor;
+        }
+
+        // Function to add a new textbox
+        function addTextbox() {
+            if (textboxCount < 9) {
+                textboxCount++;
+                var newTextboxContainer = document.createElement("div");
+                newTextboxContainer.classList.add("textbox-container");
+
+                // Check the current theme and apply the corresponding class
+                var themeClass = black === 1 ? 'black-theme' : 'white-theme';
+
+                newTextboxContainer.innerHTML = `
+                    <div class="container">
+                        <textarea id="textbox${textboxCount}" class="${themeClass}"></textarea>
+                    </div>
+                    <div class="container textbox-buttons">
+                        <button class="copy-paste-button" onclick="copyText(${textboxCount})">Copy</button>
+                        <button class="copy-paste-button" onclick="pasteText(${textboxCount})">Paste</button>
+                    </div>
+                `;
+                document.getElementById("textbox-container").appendChild(newTextboxContainer);
+                updateTextboxLayout();
+                }
+        }
+
+        // Function to delete the last textbox
+        function deleteTextbox() {
+            if (textboxCount > 1) {
+                var lastTextboxContainer = document.getElementById("textbox-container").lastChild;
+                lastTextboxContainer.remove();
+                textboxCount--;
+                updateTextboxLayout();
+            }
+        }
+
+        // Function to update the layout of textboxes based on count
+        function updateTextboxLayout() {
+            var textboxContainer = document.getElementById("textbox-container");
+            if (textboxCount >= 5) {
+                textboxContainer.style.gridTemplateColumns = "repeat(3, 1fr)";
+                resetTextboxSizes(3);
+            } else if (textboxCount === 4) {
+                textboxContainer.style.gridTemplateColumns = "repeat(2, 1fr)";
+                resetTextboxSizes(2);
+            } else {
+                textboxContainer.style.gridTemplateColumns = "repeat(1, 1fr)";
+                resetTextboxSizes(1);
+            }
+        }
+
+        function getGridLayout() {
+            var textboxes = document.querySelectorAll('textarea');
+            var textboxCount = textboxes.length;
+
+            if (textboxCount < 4) {
+                return '1x1';
+            } else if (textboxCount === 4) {
+                return '2x2';
+            } else if (textboxCount > 4) {
+                return '3x3';
+            } else {
+                return 'unknown';
+            }
+        }
+
+        function resetTextboxSizes(gridLayout) {
+            var textboxes = document.querySelectorAll('textarea');
+
+            // Determine the current grid layout based on the number of textboxes
+
+            // Calculate the maximum available size based on the window width and height
+            var maxWidth = document.documentElement.clientWidth; // 20px for margin or padding
+
+            // Calculate the number of columns based on the grid layout
+            var numberOfColumns = 1; // Default to 1 column
+            if (gridLayout === 2) {
+                numberOfColumns = 2;
+            } else if (gridLayout === 3) {
+                numberOfColumns = 3;
+            }
+
+            // Calculate the width for each textbox based on the current grid layout and available width
+            maxWidth /= numberOfColumns;
+            maxWidth -= 20;
+
+            textboxes.forEach(function (textbox) {
+                // Set the maximum available size to all textboxes
+                textbox.style.height = '10em'; // Set the default height
+                textbox.style.width = maxWidth + 'px';
+            });
+        }
+
+        function readFileFromServer() {
+        const url = 'http://10.100.102.17:5000/read_file';
+
+        fetch(url)
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+            })
+            .then(data => {
+            
+            const parsed_data = JSON.parse(data);
+            // Handle the data from the server here
+            console.log('Data from server:', parsed_data);
+            parsed_data.textboxes.forEach( (text, index) => { 
+
+                if (index < parsed_data.textboxes.length) 
+                    addTextbox();
+                document.querySelector("#textbox"+(index+1)).value = text; 
+            })
+            
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            });
+        }
+        readFileFromServer();
+
+        function saveAllData() {
+            const data = {textboxes:[]}
+            for (let ind = 0; ind < textboxCount; ind++) {
+                data.textboxes.push(document.querySelector("#textbox"+(ind+1)).value);
+            }
+            sendDataToServer(JSON.stringify(data));
+        }
+
+        function sendDataToServer(data) {
+            const url = 'http://10.100.102.17:5000/write_file'; // Replace with your server's IP and port
+            const formData = new FormData();
+            formData.append('data', data);
+
+            fetch(url, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.text();
+            })
+            .then(responseData => {
+            // Handle the response data from the server here
+            console.log('Response from server:', responseData);
+            })
+            .catch(error => {
+            console.error('Error:', error);
+            });
+        }
+
+
+
+    </script>
+</body>
+</html>
