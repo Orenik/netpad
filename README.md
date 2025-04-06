@@ -21,6 +21,7 @@ share text between devices over local network (single page webapp / server), wit
 # usage
 - running the app starts an http server listening at localhost:5000
 - navigate to this address to access the NetPad client from any device on the local network.
+- (if you are not using the host device to access the client, use an explicit ip address as localhost won't refer to the correct machine)
 - use Save All button to save textbox contents onto the hosting machine.
 
 thanks for using, please credit if redistributed or modified <3
