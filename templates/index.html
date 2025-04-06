@@ -313,7 +313,7 @@
         }
 
         function readFileFromServer() {
-        const url = 'http://10.100.102.17:5000/read_file';
+        const url = 'http://localhost:5000/read_file';
 
         fetch(url)
             .then(response => {
@@ -350,7 +350,7 @@
         }
 
         function sendDataToServer(data) {
-            const url = 'http://10.100.102.17:5000/write_file'; // Replace with your server's IP and port
+            const url = 'http://localhost:5000/write_file'; 
             const formData = new FormData();
             formData.append('data', data);
 
