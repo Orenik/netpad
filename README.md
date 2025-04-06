@@ -19,8 +19,8 @@ share text between devices over local network (single page webapp / server), wit
    * pip install pyinstaller
 
 # usage
-running the app starts an http server listening at localhost:5000
-navigate to this address to access the NetPad client from any device on the local network.
-use Save All button to save textbox contents onto the hosting machine.
+- running the app starts an http server listening at localhost:5000
+- navigate to this address to access the NetPad client from any device on the local network.
+- use Save All button to save textbox contents onto the hosting machine.
 
 thanks for using, please credit if redistributed or modified <3
