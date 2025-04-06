@@ -12,7 +12,7 @@ share text between devices over local network (single page webapp / server), wit
    
 2. in the terminal run the following command to build an executable:
    
-   pyinstaller --onefile --clean --add-data -i netpad.ico "templates;templates" main.py
+   pyinstaller --onefile --clean --add-data "templates;templates" -i netpad.ico main.py
    
    you may need to install the following dependencies:
    * pip install flask
